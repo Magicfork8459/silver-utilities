@@ -13,12 +13,12 @@ class test_singleton: public singleton
     public:
         test_singleton()
         {
-            referenced();
+            _referenced();
         }
 
         ~test_singleton()
         {
-            dereferenced();
+            _dereferenced();
         }
 
         void force_to(const std::size_t& value)
@@ -27,12 +27,12 @@ class test_singleton: public singleton
         }      
 
     protected:
-        void initialize() override 
+        void _initialize() override 
         {
             ++initialized_counter;
         }
 
-        void finalize() override 
+        void _finalize() override 
         {
             ++finalized_counter;
         }
