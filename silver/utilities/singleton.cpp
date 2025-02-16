@@ -11,26 +11,26 @@ namespace silver
             return __references;
         }
 
-        void singleton::referenced()
+        void singleton::_referenced()
         {
             std::size_t last_reference = __references;
             std::size_t next_reference = ++__references;
 
             if(last_reference != 0 and next_reference == 0)
             {
-                finalize();
+                _finalize();
             }
             else if(last_reference == 0)
             {
-                initialize();
+                _initialize();
             }
         }
 
-        void singleton::dereferenced()
+        void singleton::_dereferenced()
         {
             if(--__references <= 0)
             {
-                finalize();                
+                _finalize();                
             }
         }
 
@@ -42,11 +42,11 @@ namespace silver
 
             if(last_reference == 0 and value > 0)
             {
-                initialize();
+                _initialize();
             }
             else if(value == 0)
             {
-                finalize();
+                _finalize();
             }
         }
     }
