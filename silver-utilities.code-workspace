@@ -71,7 +71,11 @@
 			"xlocmes": "cpp",
 			"xlocmon": "cpp",
 			"xlocnum": "cpp",
-			"xloctime": "cpp"
+			"xloctime": "cpp",
+			"thread": "cpp",
+			"*.ipp": "cpp",
+			"csignal": "cpp",
+			"stop_token": "cpp"
 		}
 	}
 }
