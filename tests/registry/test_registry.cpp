@@ -27,4 +27,59 @@ BOOST_FIXTURE_TEST_CASE(random_generation, fixture)
     }
 }
 
+BOOST_FIXTURE_TEST_CASE(test_revoke_by_name, fixture)
+{
+    std::string name("test");
+    auto result = the_registry.generate(name);
+
+    BOOST_TEST_REQUIRE(result.has_value());
+    BOOST_TEST_REQUIRE(the_registry.size() == 1);
+
+    auto revoke_result = the_registry.revoke(name);
+
+    BOOST_TEST_REQUIRE(revoke_result);
+    BOOST_TEST_REQUIRE(the_registry.size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(test_revoke_by_uuid, fixture)
+{
+    boost::uuids::uuid uuid = the_registry.generate().value();
+
+    BOOST_TEST_REQUIRE(the_registry.size() == 1);
+    
+    auto revoke_result = the_registry.revoke(uuid);
+
+    BOOST_TEST_REQUIRE(revoke_result);
+    BOOST_TEST_REQUIRE(the_registry.size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(negative_revoke, fixture)
+{
+    boost::uuids::uuid uuid = the_registry.generate().value();
+
+    auto revoke_result = the_registry.revoke(uuid);
+    BOOST_TEST_REQUIRE(revoke_result);
+    revoke_result = the_registry.revoke(uuid);
+    BOOST_TEST_REQUIRE(not revoke_result);
+}
+
+BOOST_FIXTURE_TEST_CASE(revoke_and_reregister, fixture)
+{
+    std::string name("test");
+    auto result = the_registry.generate(name);
+
+    BOOST_TEST_REQUIRE(result.has_value());
+    BOOST_TEST_REQUIRE(the_registry.size() == 1);
+
+    auto revoke_result = the_registry.revoke(name);
+
+    BOOST_TEST_REQUIRE(revoke_result);
+    BOOST_TEST_REQUIRE(the_registry.size() == 0);
+
+    result = the_registry.generate(name);
+
+    BOOST_TEST_REQUIRE(result.has_value());
+    BOOST_TEST_REQUIRE(the_registry.size() == 1);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

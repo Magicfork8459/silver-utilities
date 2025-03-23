@@ -53,6 +53,30 @@ namespace silver
             return ret_val;
         }
 
+        bool registry::revoke(const boost::uuids::uuid& by_uuid)
+        {
+            std::size_t before = __uuids.size();
+
+            if(__uuids.contains(by_uuid))
+            {
+                __uuids.erase(by_uuid);
+            }
+
+            return before > __uuids.size();
+        }
+        
+        bool registry::revoke(const std::string& by_name)
+        {
+            std::size_t before = __uuids.size();
+
+            if(__uuids.contains(__name_generator(by_name)))
+            {
+                __uuids.erase(__name_generator(by_name));                
+            }
+
+            return before > __uuids.size();
+        }
+
         std::size_t registry::size() const
         {
             return __uuids.size();

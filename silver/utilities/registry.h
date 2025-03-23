@@ -23,6 +23,8 @@ namespace silver
 
                 std::optional<boost::uuids::uuid> generate();
                 std::optional<boost::uuids::uuid> generate(const std::string& name);
+                bool revoke(const boost::uuids::uuid& by_uuid);
+                bool revoke(const std::string& by_name);
                 std::size_t size() const;
 
             protected:
