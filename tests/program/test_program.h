@@ -4,6 +4,7 @@
 #include <boost/asio/steady_timer.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/system/error_code.hpp>
+#include <boost/process.hpp>
 
 #include <silver/utilities/program.h>
 

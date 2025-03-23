@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.29.2)
 project(silver_utilities)
 
-find_package(Boost REQUIRED COMPONENTS unit_test_framework system)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework system filesystem process)
 
-file(GLOB SINGLETON_SOURCE
+file(GLOB SOURCE
     ${PROJECT_SOURCE_DIR}/silver/utilities/*.cpp
     ${PROJECT_SOURCE_DIR}/silver/utilities/*.h
     ${PROJECT_SOURCE_DIR}/silver/utilities/*.hpp
 )
 
-add_library(${PROJECT_NAME} ${SINGLETON_SOURCE})
+add_library(${PROJECT_NAME} ${SOURCE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${PROJECT_SOURCE_DIR}
@@ -17,8 +17,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 target_link_libraries(${PROJECT_NAME}
-        ${Boost_LIBRARIES}
-    )
+    ${Boost_LIBRARIES}
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     LINKER_LANGUAGE CXX
@@ -27,64 +27,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 if(${TESTS_ENABLED})
     enable_testing()
-
-    set(TEST_NAME_SINGLETON test_singleton)
-    set(TEST_NAME_REGISTRY test_registry)
-    set(TEST_NAME_PROGRAM test_program)
-
-    add_executable(${TEST_NAME_SINGLETON} 
-        ${PROJECT_SOURCE_DIR}/tests/test_singleton.cpp
-        ${PROJECT_SOURCE_DIR}/tests/test_singleton.h
-    )
-
-    add_executable(${TEST_NAME_REGISTRY}
-        ${PROJECT_SOURCE_DIR}/tests/test_registry.cpp
-        ${PROJECT_SOURCE_DIR}/tests/test_registry.h
-    )
-
-    add_executable(${TEST_NAME_PROGRAM}
-        ${PROJECT_SOURCE_DIR}/tests/test_program.cpp
-        ${PROJECT_SOURCE_DIR}/tests/test_program.h
-    )
-
-    target_include_directories(${TEST_NAME_SINGLETON} PUBLIC 
-        ${Boost_INCLUDE_DIRS}        
-        ${PROJECT_SOURCE_DIR}
-    )
-
-    target_include_directories(${TEST_NAME_REGISTRY} PUBLIC 
-        ${Boost_INCLUDE_DIRS}        
-        ${PROJECT_SOURCE_DIR}
-    )
-
-    target_include_directories(${TEST_NAME_PROGRAM} PUBLIC 
-        ${Boost_INCLUDE_DIRS}        
-        ${PROJECT_SOURCE_DIR}
-    )
-
-    target_link_libraries(${TEST_NAME_SINGLETON}
-        ${Boost_LIBRARIES}
-        ${PROJECT_NAME}
-    )
-
-    target_link_libraries(${TEST_NAME_REGISTRY}
-        ${Boost_LIBRARIES}
-        ${PROJECT_NAME}
-    )
-
-    target_link_libraries(${TEST_NAME_PROGRAM}
-        ${Boost_LIBRARIES}
-        ${PROJECT_NAME}        
-    )
-
-    set_target_properties(${TEST_NAME_SINGLETON} ${TEST_NAME_REGISTRY} ${TEST_NAME_PROGRAM} PROPERTIES 
-        LINKER_LANGUAGE CXX
-        CXX_STANDARD 23
-    ) 
-
-
-    add_test(NAME ${TEST_NAME_SINGLETON} COMMAND ${TEST_NAME_SINGLETON})
-    add_test(NAME ${TEST_NAME_REGISTRY} COMMAND ${TEST_NAME_REGISTRY})
-    add_test(NAME ${TEST_NAME_PROGRAM} COMMAND ${TEST_NAME_PROGRAM})
+    add_subdirectory(tests/program/)
+    add_subdirectory(tests/registry/)
+    add_subdirectory(tests/singleton/)
 endif()
 
