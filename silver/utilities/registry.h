@@ -26,13 +26,13 @@ namespace silver
                 bool revoke(const boost::uuids::uuid& by_uuid);
                 bool revoke(const std::string& by_name);
                 std::size_t size() const;
+                std::optional<boost::uuids::uuid> get(const std::string& by_name) const;
+                bool contains(const boost::uuids::uuid& uuid) const;
 
             protected:
                 void _initialize() override;
                 void _finalize() override;
             private:
-                static bool __collision_check(const boost::uuids::uuid& uuid);
-
                 static boost::uuids::random_generator __random_generator;
                 static boost::uuids::name_generator __name_generator;
                 static std::set<boost::uuids::uuid> __uuids;

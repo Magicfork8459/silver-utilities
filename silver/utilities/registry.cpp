@@ -29,7 +29,7 @@ namespace silver
             {
                 boost::uuids::uuid generated = __random_generator();
 
-                if(not __collision_check(generated))
+                if(not contains(generated))
                 {
                     ret_val = generated;
                     __uuids.insert(generated);
@@ -44,7 +44,7 @@ namespace silver
             std::optional<boost::uuids::uuid> ret_val = {};            
             boost::uuids::uuid generated = __name_generator(name);
 
-            if(not __collision_check(generated))
+            if(not contains(generated))
             {
                 ret_val = generated;
                 __uuids.insert(generated);
@@ -82,6 +82,24 @@ namespace silver
             return __uuids.size();
         }
 
+        std::optional<boost::uuids::uuid> registry::get(const std::string& by_name) const
+        {
+            std::optional<boost::uuids::uuid> ret_val = {};
+            boost::uuids::uuid temp = __name_generator(by_name);
+
+            if(contains(temp))
+            {
+                ret_val = std::move(temp);
+            }
+
+            return ret_val;
+        }
+
+        bool registry::contains(const boost::uuids::uuid& uuid) const
+        {
+            return __uuids.contains(uuid);
+        }
+
         void registry::_initialize()
         {
             __random_generator = boost::uuids::random_generator();
@@ -91,11 +109,6 @@ namespace silver
         void registry::_finalize()
         {
             __uuids.clear();
-        }
-
-        bool registry::__collision_check(const boost::uuids::uuid& uuid)
-        {
-            return __uuids.contains(uuid);
         }
     }
 }
