@@ -82,4 +82,14 @@ BOOST_FIXTURE_TEST_CASE(revoke_and_reregister, fixture)
     BOOST_TEST_REQUIRE(the_registry.size() == 1);
 }
 
+BOOST_FIXTURE_TEST_CASE(test_get, fixture)
+{
+    std::string name("test_get");
+    auto result = the_registry.generate(name);
+    auto get_result = the_registry.get(name);
+
+    BOOST_TEST_REQUIRE((result.has_value() and get_result.has_value()));
+    BOOST_TEST_CHECK(result.value() == get_result.value());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
