@@ -34,7 +34,7 @@ namespace silver
                     ret_val = generated;
                     __uuids.insert(generated);
                 }
-            } while (current_attempts < __max_attempts and not ret_val.has_value());
+            } while (++current_attempts < __max_attempts and not ret_val.has_value());
 
             return ret_val;
         }
